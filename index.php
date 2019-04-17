@@ -71,11 +71,14 @@ $ads = [
     ]
 ];
 
-function formatting_amount (int $price): string {
-    if ($price > 999) {
-        $price = number_format($price, 0, ',', ' ');
+function formatting_amount (int $price): string
+{
+    if ($price < 1000) {
+        $result = $price;
+    } else {
+        $result = number_format($price, 0, ',', ' ');
     }
-    return $price . ' <b class="rub">р</b>';
+    return $result . ' <b class="rub">р</b>';
 }
 ?>
 <!DOCTYPE html>
