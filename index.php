@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+include_once('init.php');
 
 $is_auth = rand(0, 1);
 
@@ -71,13 +72,12 @@ $ads = [
     ]
 ];
 
-include_once('init.php');
-
 $page_content = include_template('index.php', ['categories' => $categories, 'ads' => $ads]);
 $page_layout = include_template('layout.php', [
     'content' => $page_content,
     'categories' => $categories,
     'user_name' => $user_name,
+    'is_auth' => $is_auth,
     'title' => 'Yeti Cave – Главная страница'
 ]);
 
