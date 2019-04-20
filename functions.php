@@ -25,11 +25,11 @@ $little_time = is_little_time($s_before_the_end);
 
 function is_little_time ($s_before_end)
 {
-    $l_time = '';
-    if ($s_before_the_end <= 3600) {
-        $l_time = 'timer--finishing';
+    $finish_time = '';
+    if ($s_before_end <= 3600) {
+        $finish_time = 'timer--finishing';
     }
-    return $l_time;
+    return $finish_time;
 }
 
 $time_before_the_end = time_before_the_end ($s_before_the_end);
