@@ -3,7 +3,6 @@ declare(strict_types=1);
 include_once('init.php');
 
 $is_auth = rand(0, 1);
-
 $user_name = 'Александр'; // укажите здесь ваше имя
 
 $categories = [
@@ -72,7 +71,12 @@ $ads = [
     ]
 ];
 
-$page_content = include_template('index.php', ['categories' => $categories, 'ads' => $ads]);
+$page_content = include_template('index.php', [
+    'categories' => $categories,
+    'ads' => $ads,
+    'little_time' => $little_time,
+    'time_before_the_end' => $time_before_the_end
+]);
 $page_layout = include_template('layout.php', [
     'content' => $page_content,
     'categories' => $categories,
