@@ -11,8 +11,6 @@ function formatting_amount (int $price): string
     return $result . ' <b class="rub">р</b>';
 }
 
-$s_before_the_end = seconds_before_the_end ($timezone);
-
 function seconds_before_the_end ($time)
 {
     $time_now = strtotime('now');
@@ -21,7 +19,7 @@ function seconds_before_the_end ($time)
     return $different;
 }
 
-$little_time = is_little_time($s_before_the_end);
+$s_before_the_end = seconds_before_the_end ($timezone);
 
 function is_little_time ($s_before_end)
 {
@@ -32,8 +30,7 @@ function is_little_time ($s_before_end)
     return $finish_time;
 }
 
-$time_before_the_end = time_before_the_end ($s_before_the_end);
-
+$little_time = is_little_time($s_before_the_end);
 
 function time_before_the_end ($seconds): string
 {
@@ -68,3 +65,5 @@ function time_before_the_end ($seconds): string
     $before_end = $hours . ':' . $minutes;
     return $before_end;
 }
+
+$time_before_the_end = time_before_the_end ($s_before_the_end);
