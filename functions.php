@@ -11,14 +11,14 @@ function formatting_amount (int $price): string
     return $result . ' <b class="rub">р</b>';
 }
 
-function seconds_before_the_end ($time)
+function seconds_before_the_end (int $time): int
 {
     $end_time = strtotime("tomorrow midnight");
     $different = $end_time - $time;
     return $different;
 }
 
-function is_little_time ($s_before_end)
+function is_little_time (int $s_before_end): string
 {
     $finish_time = '';
     if ($s_before_end <= 3600) {
@@ -27,14 +27,10 @@ function is_little_time ($s_before_end)
     return $finish_time;
 }
 
-function time_before_the_end ($seconds): string
+function time_before_the_end (int $seconds): string
 {
     $hours = floor($seconds / 3600);
     $minutes = floor(($seconds % 3600) / 60);
-
-    if ($seconds < 60 && $seconds > 0) {
-        $minutes = 1;
-    }
 
     if ($minutes < 10) {
         $minutes = 0 . $minutes;
