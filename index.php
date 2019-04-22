@@ -73,10 +73,9 @@ $ads = [
 
 $page_content = include_template('index.php', [
     'categories' => $categories,
-    'ads' => $ads,
-    'little_time' => $little_time,
-    'time_before_the_end' => $time_before_the_end
+    'ads' => $ads
 ]);
+
 $page_layout = include_template('layout.php', [
     'content' => $page_content,
     'categories' => $categories,

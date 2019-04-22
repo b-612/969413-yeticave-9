@@ -29,8 +29,8 @@
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost"><?php print(formatting_amount(htmlspecialchars($item['price']))) ?></span>
                         </div>
-                        <div class="lot__timer timer <?php echo($little_time) ?>">
-                            <?php echo($time_before_the_end) ?>
+                        <div class="lot__timer timer <?php echo(is_little_time(seconds_before_the_end ($timezone))) ?>">
+                            <?php echo(time_before_the_end (seconds_before_the_end (strtotime('now')))) ?>
                         </div>
                     </div>
                 </div>

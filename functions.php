@@ -13,13 +13,10 @@ function formatting_amount (int $price): string
 
 function seconds_before_the_end ($time)
 {
-    $time_now = strtotime('now');
     $end_time = strtotime("tomorrow midnight");
-    $different = $end_time - $time_now;
+    $different = $end_time - $time;
     return $different;
 }
-
-$s_before_the_end = seconds_before_the_end ($timezone);
 
 function is_little_time ($s_before_end)
 {
@@ -30,17 +27,10 @@ function is_little_time ($s_before_end)
     return $finish_time;
 }
 
-$little_time = is_little_time($s_before_the_end);
-
 function time_before_the_end ($seconds): string
 {
-    $minutes = floor($seconds / 60);
-    $hours = floor($minutes / 60);
-    $days = floor($hours / 24);
-
-    if ($minutes >= 60) {
-        $minutes = $minutes - ($hours * 60);
-    }
+    $hours = floor($seconds / 3600);
+    $minutes = floor(($seconds % 3600) / 60);
 
     if ($seconds < 60 && $seconds > 0) {
         $minutes = 1;
@@ -50,20 +40,10 @@ function time_before_the_end ($seconds): string
         $minutes = 0 . $minutes;
     }
 
-    if ($hours >= 24) {
-        $hours = $hours - ($days * 24);
-    }
-
     if ($hours < 10) {
         $hours = 0 . $hours;
-    }
-
-    if ($days < 10) {
-        $days = 0 . $days;
     }
 
     $before_end = $hours . ':' . $minutes;
     return $before_end;
 }
-
-$time_before_the_end = time_before_the_end ($s_before_the_end);
