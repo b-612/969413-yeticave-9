@@ -40,11 +40,7 @@ CREATE TABLE lot (
   bet_rate TINYINT UNSIGNED
 );
 
-CREATE INDEX idx_user_id ON lot(user_id);
-CREATE INDEX idx_lot_date ON lot(date_add);
-CREATE INDEX idx_cat_id ON lot(cat_id);
 CREATE FULLTEXT INDEX idx_name_description ON lot(name,description);
-CREATE INDEX idx_lot_price ON lot(price);
 CREATE INDEX idx_win_id_compl_date ON lot(winner_id,completion_date);
 CREATE INDEX idx_lot_by_date_add ON lot(cat_id,date_add DESC);
 
@@ -58,8 +54,3 @@ CREATE TABLE rate (
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     rate INT UNSIGNED
 );
-
-CREATE INDEX idx_user_id ON rate(user_id);
-CREATE INDEX idx_lot_id ON rate(lot_id);
-CREATE INDEX idx_rate_date ON rate(date);
-CREATE INDEX idx_rate_rate ON rate(rate);
