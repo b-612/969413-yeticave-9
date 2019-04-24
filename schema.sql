@@ -5,28 +5,23 @@ USE yeti_cave;
 
 CREATE TABLE category (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(128) UNIQUE,
+  name VARCHAR(128),
   code VARCHAR(64) UNIQUE
 );
 
-CREATE UNIQUE INDEX category_id ON category(id);
 CREATE UNIQUE INDEX category_name ON category(name);
 
 CREATE TABLE user (
   id INT AUTO_INCREMENT PRIMARY KEY,
   reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   email VARCHAR(128) NOT NULL UNIQUE,
-  name VARCHAR(128) NOT NULL UNIQUE,
+  name VARCHAR(128) NOT NULL,
   password VARCHAR(128),
   avatar VARCHAR(512),
   contacts VARCHAR(1000)
 );
 
-CREATE UNIQUE INDEX user_id ON user(id);
-CREATE UNIQUE INDEX user_email ON user(email);
-CREATE INDEX user_name ON user(name);
-CREATE INDEX reg_date ON user(reg_date);
-CREATE FULLTEXT INDEX user_contacts ON user(contacts);
+
 
 CREATE TABLE lot (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -34,22 +29,25 @@ CREATE TABLE lot (
   FOREIGN KEY(user_id) REFERENCES user(id),
   cat_id INT,
   FOREIGN KEY(cat_id) REFERENCES category(id),
-  winner_id INT UNSIGNED,
+  winner_id INT,
+  FOREIGN KEY(winner_id) REFERENCES user(id),
   date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   name VARCHAR(256),
   description VARCHAR(1000),
   img VARCHAR(512),
-  start_price INT UNSIGNED,
+  price INT UNSIGNED,
   completion_date TIMESTAMP,
   bet_rate TINYINT UNSIGNED
 );
 
-CREATE UNIQUE INDEX lot_id ON lot(id);
-CREATE INDEX lot_date ON lot(date_add);
-CREATE FULLTEXT INDEX name_description ON lot(name,description);
-CREATE INDEX lot_start_price ON lot(start_price);
-CREATE INDEX lot_completion_date ON lot(completion_date);
-CREATE INDEX lot_bet_rate ON lot(bet_rate);
+CREATE INDEX idx_user_id ON lot(user_id);
+CREATE INDEX idx_lot_date ON lot(date_add);
+CREATE INDEX idx_cat_id ON lot(cat_id);
+CREATE FULLTEXT INDEX idx_name_description ON lot(name,description);
+CREATE INDEX idx_lot_price ON lot(price);
+CREATE INDEX idx_win_id_compl_date ON lot(winner_id,completion_date);
+CREATE INDEX idx_lot_by_date_add ON lot(cat_id,date_add DESC);
+
 
 CREATE TABLE rate (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -61,6 +59,7 @@ CREATE TABLE rate (
     rate INT UNSIGNED
 );
 
-CREATE UNIQUE INDEX rate_id ON rate(id);
-CREATE INDEX rate_date ON rate(date);
-CREATE INDEX rate_rate ON rate(rate);
+CREATE INDEX idx_user_id ON rate(user_id);
+CREATE INDEX idx_lot_id ON rate(lot_id);
+CREATE INDEX idx_rate_date ON rate(date);
+CREATE INDEX idx_rate_rate ON rate(rate);
