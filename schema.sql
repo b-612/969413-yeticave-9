@@ -5,23 +5,21 @@ USE yeti_cave;
 
 CREATE TABLE category (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(128),
-  code VARCHAR(64) UNIQUE
+  cat_name VARCHAR(128),
+  class VARCHAR(64) UNIQUE
 );
 
-CREATE UNIQUE INDEX category_name ON category(name);
+CREATE UNIQUE INDEX category_name ON category(cat_name);
 
 CREATE TABLE user (
   id INT AUTO_INCREMENT PRIMARY KEY,
   reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   email VARCHAR(128) NOT NULL UNIQUE,
-  name VARCHAR(128) NOT NULL,
+  user_name VARCHAR(128) NOT NULL,
   password VARCHAR(128),
   avatar VARCHAR(512),
   contacts VARCHAR(1000)
 );
-
-
 
 CREATE TABLE lot (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -32,15 +30,15 @@ CREATE TABLE lot (
   winner_id INT,
   FOREIGN KEY(winner_id) REFERENCES user(id),
   date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name VARCHAR(256),
-  description VARCHAR(1000),
+  lot_name VARCHAR(256),
+  lot_description VARCHAR(1000),
   img VARCHAR(512),
-  price INT UNSIGNED,
+  start_price INT UNSIGNED,
   completion_date TIMESTAMP,
   bet_rate TINYINT UNSIGNED
 );
 
-CREATE FULLTEXT INDEX idx_name_description ON lot(name,description);
+CREATE FULLTEXT INDEX idx_name_description ON lot(lot_name,lot_description);
 CREATE INDEX idx_win_id_compl_date ON lot(winner_id,completion_date);
 CREATE INDEX idx_lot_by_date_add ON lot(cat_id,date_add DESC);
 
