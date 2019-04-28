@@ -34,16 +34,16 @@ SELECT cat_name
 FROM category;
 
 # получить самые новые, открытые лоты. Каждый лот должен включать название, стартовую цену, ссылку на изображение, цену, название категории
-SELECT lot.id, date_add, lot_name, start_price, img, CASE WHEN rate IS NULL THEN COALESCE (rate, start_price) ELSE MAX(rate) END AS price, cat_name
+SELECT lot.id AS lot_id, date_add AS starting_date, lot_name AS title, start_price AS lot_start_price, img AS picture, MAX(rate) AS price, cat_name AS category
 FROM lot
 LEFT JOIN rate ON lot.id = rate.lot_id
 JOIN category ON lot.cat_id = category.id
-WHERE completion_date > NOW() AND rate = (SELECT MAX(rate) FROM rate) OR rate IS NULL
-GROUP BY lot.id, lot_name, img, rate, cat_name, date_add
+WHERE completion_date > NOW()
+GROUP BY lot.id, date_add, lot_name, start_price, img, cat_name
 ORDER BY date_add DESC;
 
 # показать лот по его id. Получите также название категории, к которой принадлежит лот
-SELECT lot.id, lot_name, cat_name
+SELECT lot.id AS lot_id, lot_name AS title, cat_name AS category
 FROM lot
 JOIN category ON lot.cat_id = category.id;
 
