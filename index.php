@@ -2,74 +2,31 @@
 declare(strict_types=1);
 include_once('init.php');
 
+$con = mysqli_connect("969413-yeticave-9", "root", "", "yeti_cave");
+
+mysqli_set_charset($con, "utf8");
+
+if (!$con) {
+    echo("Ошибка подключения:" . mysqli_connect_error());
+} else {
+    $show_lots = "SELECT * FROM lot";
+    $lots = mysqli_query($con, $show_lots);
+    if(!$lots) {
+        $error = mysqli_error($con);
+        echo("Ошибка MySql:" . $error);
+    }
+    $show_cat = "SELECT * FROM categories";
+    $cat = mysqli_query($con, $show_cat);
+    if(!$cat) {
+        $error = mysqli_error($con);
+        echo("Ошибка MySql:" . $error);
+    }
+    $ads = mysqli_fetch_all($lots, MYSQLI_ASSOC);
+    $categories = mysqli_fetch_all($cat, MYSQLI_ASSOC);
+}
+
 $is_auth = rand(0, 1);
 $user_name = 'Александр'; // укажите здесь ваше имя
-
-$categories = [
-    [
-        'name' => 'Доски и лыжи',
-        'class' => 'promo__item--boards'
-    ],
-    [
-        'name' => 'Крепления',
-        'class' => 'promo__item--attachment'
-    ],
-    [
-        'name' => 'Ботинки',
-        'class' => 'promo__item--boots'
-    ],
-    [
-        'name' => 'Одежда',
-        'class' => 'promo__item--clothing'
-    ],
-    [
-        'name' => 'Инструменты',
-        'class' => 'promo__item--tools'
-    ],
-    [
-        'name' => 'Разное',
-        'class' => 'promo__item--other'
-    ]
-];
-
-$ads = [
-    [
-        'name' => '2014 Rossignol District Snowboard',
-        'category' => $categories[0]['name'],
-        'price' => 10999,
-        'url' => 'img/lot-1.jpg'
-    ],
-    [
-        'name' => 'DC Ply Mens 2016/2017 Snowboard',
-        'category' => $categories[0]['name'],
-        'price' => 159999,
-        'url' => 'img/lot-2.jpg'
-    ],
-    [
-        'name' => 'Крепления Union Contact Pro 2015 года размер L/XL',
-        'category' => $categories[1]['name'],
-        'price' => 8000,
-        'url' => 'img/lot-3.jpg'
-    ],
-    [
-        'name' => 'Ботинки для сноуборда DC Mutiny Charocal',
-        'category' => $categories[2]['name'],
-        'price' => 10999,
-        'url' => 'img/lot-4.jpg'
-    ],
-    [
-        'name' => 'Куртка для сноуборда DC Mutiny Charocal',
-        'category' => $categories[3]['name'],
-        'price' => 7500,
-        'url' => 'img/lot-5.jpg'
-    ],
-    [
-        'name' => 'Маска Oakley Canopy',
-        'category' => $categories[5]['name'],
-        'price' => 5400,
-        'url' => 'img/lot-6.jpg'
-    ]
-];
 
 $page_content = include_template('index.php', [
     'categories' => $categories,
