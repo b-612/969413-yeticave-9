@@ -2,7 +2,7 @@
 declare(strict_types=1);
 include_once('init.php');
 
-$show_lots = "SELECT categories.name AS category, lot.name AS name, url, price FROM lot JOIN categories ON lot.category_id = categories.id";
+$show_lots = "SELECT categories.name AS category, lot.name AS name, url, price FROM lot JOIN categories ON lot.category_id = categories.id WHERE completion_date > now() ORDER BY date_add DESC";
 $show_cat = "SELECT name, class FROM categories";
 
 $ads = getLots($con, $show_lots);
