@@ -44,28 +44,28 @@ function time_before_the_end (int $seconds): string
     return $before_end;
 }
 
-function getLots($con, $show_lots): array
+function getLots($con): array
 {
-    $lots = mysqli_fetch_all(mysqli_query($con, $show_lots), MYSQLI_ASSOC);
+    $lots = mysqli_fetch_all(mysqli_query($con, "SELECT categories.name AS category, lot.name AS name, url, price FROM lot JOIN categories ON lot.category_id = categories.id WHERE completion_date > now() ORDER BY date_add DESC"), MYSQLI_ASSOC);
     if ($lots !== false) {
         return $lots;
-    } else {
-        $error = mysqli_error($lots);
-        $content = include_template('error.php', ['error' => $error]);
-        echo($content);
-        die();
     }
+    $error = mysqli_error($con);
+    $content = include_template('error.php', ['error' => $error]);
+    echo($content);
+    die();
+
 }
 
-function getCat($con, $show_cat): array
+function getCat($con): array
 {
-    $cats = mysqli_fetch_all(mysqli_query($con, $show_cat), MYSQLI_ASSOC);
+    $cats = mysqli_fetch_all(mysqli_query($con, "SELECT name, class FROM categories"), MYSQLI_ASSOC);
     if ($cats !== false) {
         return $cats;
-    } else {
-        $error = mysqli_error($cats);
-        $content = include_template('error.php', ['error' => $error]);
-        echo($content);
-        die();
     }
+    $error = mysqli_error($con);
+    $content = include_template('error.php', ['error' => $error]);
+    echo($content);
+    die();
+
 }
