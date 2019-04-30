@@ -43,3 +43,29 @@ function time_before_the_end (int $seconds): string
     $before_end = $hours . ':' . $minutes;
     return $before_end;
 }
+
+function getLots($con): array
+{
+    $lots = mysqli_fetch_all(mysqli_query($con, "SELECT categories.name AS category, lot.name AS name, url, price FROM lot JOIN categories ON lot.category_id = categories.id WHERE completion_date > now() ORDER BY date_add DESC"), MYSQLI_ASSOC);
+    if ($lots !== false) {
+        return $lots;
+    }
+    $error = mysqli_error($con);
+    $content = include_template('error.php', ['error' => $error]);
+    echo($content);
+    die();
+
+}
+
+function getCat($con): array
+{
+    $cats = mysqli_fetch_all(mysqli_query($con, "SELECT name, class FROM categories"), MYSQLI_ASSOC);
+    if ($cats !== false) {
+        return $cats;
+    }
+    $error = mysqli_error($con);
+    $content = include_template('error.php', ['error' => $error]);
+    echo($content);
+    die();
+
+}

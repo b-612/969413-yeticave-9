@@ -1,5 +1,5 @@
-INSERT INTO category
-(cat_name, class)
+INSERT INTO categories
+(name, class)
 VALUES ("Доски и лыжи", "boards"),
       ("Крепления", "attachment"),
       ("Ботинки", "boots"),
@@ -8,7 +8,7 @@ VALUES ("Доски и лыжи", "boards"),
       ("Разное", "other");
 
 INSERT INTO user
-(email, user_name, password, avatar, contacts)
+(email, user_name, password, url, contacts)
 VALUES ("firstuser@mail.ru", "First User", "password123", "img/avatar.jpg", "Адрес: Москва, Красная площадь, 2. Телефон: +79052138767"),
       ("second@mail.ru", "Second User", "password456", "img/avatar.jpg", "Адрес: Санкт-Петербург, пр. Ленина 7. Телефон: +79052138768"),
       ("petrpetrov@mail.ru", "Petr Petrov", "password321", "img/avatar.jpg", "Адрес: Владивосток, ул. Строителей 4, кв. 27. Телефон: +79052138769"),
@@ -16,7 +16,7 @@ VALUES ("firstuser@mail.ru", "First User", "password123", "img/avatar.jpg", "А�
       ("google@mail.ru", "Представитель Гугл", "passwordGoogle", "img/avatar.jpg", "Адрес: New York, ул. Свободы, 11. Телефон: +79052138790");
 
 INSERT INTO lot
-(user_id, cat_id, lot_name, lot_description, img, start_price, completion_date, bet_rate)
+(user_id, category_id, name, description, url, price, completion_date, bet_rate)
 VALUES (2, 1, "2014 Rossignol District Snowboard", "Хороший сноуборд", "img/lot-1.jpg", 10999, '2019-08-23 15:00:00', 100),
        (5, 1, "DC Ply Mens 2016/2017 Snowboard", "Легкий маневренный сноуборд, готовый дать жару в любом парке, растопив снег мощным щелчкоми четкими дугами. Стекловолокно Bi-Ax, уложенное в двух направлениях, наделяет этот снаряд отличной гибкостью и отзывчивостью, а симметричная геометрия в сочетании с классическим прогибом кэмбер позволит уверенно держать высокие скорости. А если к концу катального дня сил совсем не останется, просто посмотрите на Вашу доску и улыбнитесь, крутая графика от Шона Кливера еще никого не оставляла равнодушным.", "img/lot-2.jpg", 159999, '2019-07-03 21:30:00', 1000),
        (3, 2, "Крепления Union Contact Pro 2015 года размер L/XL", "Нормальные крепления", "img/lot-3.jpg", 8000, '2019-06-12 11:00:00', 200),
@@ -30,26 +30,26 @@ VALUES (1, 1, 15999),
        (2, 1, 16999);
 
 # получить все категории
-SELECT cat_name
-FROM category;
+SELECT name
+FROM categories;
 
 # получить самые новые, открытые лоты. Каждый лот должен включать название, стартовую цену, ссылку на изображение, цену, название категории
-SELECT lot.id AS lot_id, lot.date_add AS starting_date, lot.lot_name AS title, lot.start_price AS lot_start_price, lot.img AS picture, rate.MAX(rate) AS price, category.cat_name AS category
+SELECT lot.id AS lot_id, lot.date_add AS starting_date, lot.name AS lot_name, lot.price AS start_price, lot.url AS picture, MAX(rate) AS rate_price, categories.name AS category
 FROM lot
 LEFT JOIN rate ON lot.id = rate.lot_id
-JOIN category ON lot.cat_id = category.id
+JOIN categories ON lot.category_id = categories.id
 WHERE lot.completion_date > NOW()
-GROUP BY lot.id, lot.date_add, lot.lot_name, lot.start_price, lot.img, category.cat_name
+GROUP BY lot.id, lot.date_add, lot.name, lot.price, lot.url, categories.name
 ORDER BY lot.date_add DESC;
 
 # показать лот по его id. Получите также название категории, к которой принадлежит лот
-SELECT lot.id AS lot_id, lot.lot_name AS title, category.cat_name AS category
+SELECT lot.id AS lot_id, lot.name AS title, categories.name AS category
 FROM lot
-JOIN category ON lot.cat_id = category.id;
+JOIN categories ON lot.category_id = categories.id;
 
 # обновить название лота по его идентификатору
 UPDATE lot
-SET lot_name = "Куртка для сноуборда (и не только) DC Mutiny Charocal"
+SET name = "Куртка для сноуборда (и не только) DC Mutiny Charocal"
 WHERE id = 5;
 
 # получить список самых свежих ставок для лота по его идентификатору
