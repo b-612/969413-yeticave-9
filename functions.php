@@ -11,9 +11,9 @@ function formatting_amount (int $price): string
     return $result . ' <b class="rub">р</b>';
 }
 
-function seconds_before_the_end (int $time): int
+function seconds_before_the_end (int $time, $end_time): int
 {
-    $end_time = strtotime("tomorrow midnight");
+//    $end_time = strtotime("tomorrow midnight");
     $different = $end_time - $time;
     return $different;
 }
@@ -46,7 +46,7 @@ function time_before_the_end (int $seconds): string
 
 function getLots($con): array
 {
-    $lots = mysqli_fetch_all(mysqli_query($con, "SELECT categories.name AS category, lot.name AS name, url, price FROM lot JOIN categories ON lot.category_id = categories.id WHERE completion_date > now() ORDER BY date_add DESC"), MYSQLI_ASSOC);
+    $lots = mysqli_fetch_all(mysqli_query($con, "SELECT categories.name AS category, lot.id, lot.name, lot.url, lot.price AS price, lot.completion_date FROM lot JOIN categories ON lot.category_id = categories.id WHERE lot.completion_date > now() ORDER BY date_add DESC"), MYSQLI_ASSOC);
     if ($lots !== false) {
         return $lots;
     }
@@ -55,6 +55,23 @@ function getLots($con): array
     echo($content);
     die();
 
+}
+
+function getLot($con)
+{
+    $params[] = $_GET['id'];
+    $sql = "SELECT lot.id, lot.name AS title, lot.description, lot.url, lot.price, categories.name AS category, lot.completion_date FROM lot JOIN categories ON lot.category_id = categories.id WHERE lot.id = ?";
+    $sql_prepare = db_get_prepare_stmt($con, $sql, $params);
+    mysqli_stmt_execute($sql_prepare);
+    $result = mysqli_stmt_get_result($sql_prepare);
+    $lot = mysqli_fetch_array($result,MYSQLI_ASSOC);
+    if ($lot !== false) {
+        return $lot;
+    }
+    $error = mysqli_error($con);
+    $content = include_template('error.php', ['error' => $error]);
+    echo($content);
+    die();
 }
 
 function getCat($con): array
@@ -67,5 +84,4 @@ function getCat($con): array
     $content = include_template('error.php', ['error' => $error]);
     echo($content);
     die();
-
 }
