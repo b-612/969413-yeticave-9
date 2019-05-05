@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -47,7 +48,7 @@
         </div>
     </header>
 
-    <main class="container">
+    <main <?php echo($main_class) ?>>
         <?php echo($content) ?>
     </main>
 </div>

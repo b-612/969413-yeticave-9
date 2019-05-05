@@ -1,4 +1,4 @@
 <?php
-include_once('init.php');
+declare(strict_types=1);
 
-echo("Ошибка соединения с базой данных:" . mysqli_connect_error($con));
+echo($error);

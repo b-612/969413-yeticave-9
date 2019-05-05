@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 include_once('init.php');
 
 function formatting_amount (int $price): string
@@ -13,7 +14,6 @@ function formatting_amount (int $price): string
 
 function seconds_before_the_end (int $time, $end_time): int
 {
-//    $end_time = strtotime("tomorrow midnight");
     $different = $end_time - $time;
     return $different;
 }
@@ -46,7 +46,7 @@ function time_before_the_end (int $seconds): string
 
 function getLots($con): array
 {
-    $lots = mysqli_fetch_all(mysqli_query($con, "SELECT categories.name AS category, lot.id, lot.name, lot.url, lot.price AS price, lot.completion_date FROM lot JOIN categories ON lot.category_id = categories.id WHERE lot.completion_date > now() ORDER BY date_add DESC"), MYSQLI_ASSOC);
+    $lots = mysqli_fetch_all(mysqli_query($con, "SELECT categories.name AS category, lot.id, lot.name, lot.url, lot.price AS price, lot.completion_date, MAX(rate) AS rate FROM lot JOIN categories ON lot.category_id = categories.id LEFT JOIN rate ON lot.id = rate.lot_id WHERE lot.completion_date > now() GROUP BY lot.id ORDER BY date_add DESC"), MYSQLI_ASSOC);
     if ($lots !== false) {
         return $lots;
     }
@@ -57,10 +57,10 @@ function getLots($con): array
 
 }
 
-function getLot($con)
+function getLot(mysqli $con, int $id): ?array
 {
-    $params[] = $_GET['id'];
-    $sql = "SELECT lot.id, lot.name AS title, lot.description, lot.url, lot.price, categories.name AS category, lot.completion_date FROM lot JOIN categories ON lot.category_id = categories.id WHERE lot.id = ?";
+    $params[] = $id;
+    $sql = "SELECT lot.id, lot.name AS title, lot.description, lot.url, lot.price, categories.name AS category, lot.completion_date, MAX(rate) AS rate FROM lot JOIN categories ON lot.category_id = categories.id LEFT JOIN rate ON lot.id = rate.lot_id WHERE lot.id = ? GROUP BY lot.id";
     $sql_prepare = db_get_prepare_stmt($con, $sql, $params);
     mysqli_stmt_execute($sql_prepare);
     $result = mysqli_stmt_get_result($sql_prepare);

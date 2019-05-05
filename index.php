@@ -18,7 +18,8 @@ $page_layout = include_template('layout.php', [
     'categories' => $categories,
     'user_name' => $user_name,
     'is_auth' => $is_auth,
-    'title' => 'Yeti Cave – Главная страница'
+    'title' => 'Yeti Cave – Главная страница',
+    'main_class' => 'class=\'container\''
 ]);
 
 echo($page_layout);
